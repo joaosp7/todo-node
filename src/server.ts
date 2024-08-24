@@ -1,13 +1,13 @@
 import fastify from "fastify";
+import { TODORoutes } from "./routes/TODORoutes";
 
 const app = fastify()
 
-app.get('/hello', ()=>{
-    return'Wellcome to my first TODO!';
+app.register(TODORoutes, {
+    prefix: 'todo'
 })
 
-app.listen({
+await app.listen({
     port: 3333,
-}).then(() => {
-    console.log('HTTP Server Running!');
 })
+console.log('App Server Running! ')
