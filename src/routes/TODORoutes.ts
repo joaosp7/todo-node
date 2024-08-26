@@ -17,6 +17,7 @@ export async function TODORoutes(app: FastifyInstance){
     app.get('/', (request: FastifyRequest, reply: FastifyReply)=>{
         return todos
     })
+    // RETURN ALL TODOS IN MEMORY 
 
     app.get('/:id', (request: FastifyRequest, reply: FastifyReply) => {
        const { id } = request.params
@@ -43,12 +44,39 @@ export async function TODORoutes(app: FastifyInstance){
         todos.push(todo);
         reply.status(201).send('TODO Created!')
     })
+    // Get request body params to create a Todo object, on the request body id and finished are not passed since they have a defautl value
 
-    // GET SPECIF TODO
+    app.delete('/:id', (request: FastifyRequest, reply: FastifyReply) => {
+        const { id } = request.params
+        todos.forEach(todo => {
+            const found_it: boolean = id === todo.id;
+            if (found_it){
+                const index: number = todos.indexOf(todo);
+                todos.splice(index, 1);
+                reply.status(202).send('Todo Gone Forever and Ever!');
+            }
+        })
+    })
+    // DELETE A TODO by given its unique ID
 
-    // CREATE A TODO
 
-    // DELETE A TODO
-
+    app.patch('/:id', (request: FastifyRequest, reply: FastifyReply) =>{
+        const { id } = request.params;
+        todos.forEach(todo => {
+            const found_it: boolean = id === todo.id;
+            const  { name, description } = request.body
+            if (found_it){
+                const index:number = todos.indexOf(todo);
+                const updated_todo: Todo = {
+                    id: todo.id,
+                    name,
+                    description,
+                    finished: todo.finished
+                } 
+                todos[index] = updated_todo
+                reply.status(200).send('Todo Updated!')
+            }
+        })
+    })
     // UPDATE A TODO
 }
