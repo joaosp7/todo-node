@@ -20,13 +20,13 @@ export async function TODORoutes(app: FastifyInstance){
     // RETURN ALL TODOS IN MEMORY 
 
     app.get('/:id', (request: FastifyRequest, reply: FastifyReply) => {
-       const { id } = request.params
+        const { id } = request.params
         todos.forEach(todo => {
             const found_it = id == todo.id
 
             if (found_it){
 
-            reply.send(todo) 
+                reply.send(todo) 
             }
 
         });
@@ -34,8 +34,8 @@ export async function TODORoutes(app: FastifyInstance){
     })
 
     app.post('/', (request:FastifyRequest, reply: FastifyReply) =>{
-       const { name, description } = request.body;
-       const todo: Todo = {
+        const { name, description } = request.body;
+        const todo: Todo = {
         id: randomUUID(),
         name,
         description,
